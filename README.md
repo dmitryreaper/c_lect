@@ -1,2 +1,3 @@
-# c_lect
-[Image alt](https://github.com/dmitryreaper/c_lect/blob/main/image/book.jpg)
+# Выполненные упражнения из книг по Языку Си
+## Книги по которым выполнялись задания
+![deitel](https://github.com/dmitryreaper/c_lect/blob/main/image/book.jpg)
