@@ -11,14 +11,19 @@ int main(void)
         printf("Enter result (1=pass, 2=fail): ");
         scanf("%d", &result);
 
-        if(result ==1)
+        if(result == 1)
         {
             passes++;
         }
-        else
+        else if(result != 1 && result != 2)
         {
+            printf("Please enter correct number\n");
+            continue;
+        }
+        else {
             failures++;
         }
+
         student++;
     }
 
