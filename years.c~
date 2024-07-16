@@ -1,0 +1,11 @@
+#include <stdio.h>
+
+int main(void)
+{
+    int years = 0;
+    printf("Напишите сколько вам лет: ");
+    scanf("%d", &years);
+
+    printf("Ваш возраст в секундах равен: %d", years * (int)(3.156х10**7))
+
+}

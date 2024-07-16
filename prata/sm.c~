@@ -1,0 +1,9 @@
+#inclue <stdio.h>
+
+int main(void)
+{
+    double sm;
+    printf("Введите рост в дюймах: ");
+    scanf("%f", &sm);
+
+}
