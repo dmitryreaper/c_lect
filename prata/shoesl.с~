@@ -1,0 +1,15 @@
+/* shoesl.c -- преобразует размер обуви в дюймы */
+#include <stdio.h>
+#define ADJUST 7.31
+// один из видов символической константы
+int main(void)
+(
+const d o u i e SCALE = 0.333; // еще один вид символической константы
+d o U i e shoe, foot;
+shoe = 9.0;
+foot = SCALE * shoe + ADJUST;
+printf(”Размер обуви (мужской)
+длина с т у п н и \ п " ) ;
+printf ("%lO .lf %20.2f д ю й м о в ^ ”, shoe, foot);
+return О;
+}
