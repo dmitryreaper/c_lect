@@ -1,0 +1,6 @@
+/* префискная и постфиксная формы */
+#include <stdio.h>
+int main(void)
+{
+    int ultra = 0, super = 0;
+}
