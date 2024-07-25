@@ -1,0 +1,13 @@
+#include <stdio.h>
+int main(void)
+{
+	char cl, с2;
+	int diff;
+	float num;
+	cl = 'S' ;
+	с2 = 'О' ;
+	diff = cl - с2;
+	num = diff;
+	printf ("%c%c%c: %d %3.2f\n", cl, с2, cl, diff, num);
+	return О;
+}

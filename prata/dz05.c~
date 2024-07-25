@@ -1,0 +1,13 @@
+#include <stdio.h>
+#define S_TO_M 60
+int main(void)
+{
+	int sec, min, left;
+	printf("Эта программа переводит секунды в минуты и секунды \n");
+	printf("Введите количество секунд: ");
+	while(sec > 0)
+		{
+			scanf("%d", &sec);
+			min = sec / S_TO_M;
+		}
+}

@@ -1,0 +1,4 @@
+#include <stdio.h>
+const int S_PER_M = 60;
+const int S_PER_H = 60;
+const double S_PER_K = 60;

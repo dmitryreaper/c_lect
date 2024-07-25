@@ -1,0 +1,7 @@
+#include <stdio.h>
+#define weekcnt 7
+int main(void)
+{
+	int week, days;
+	
+}

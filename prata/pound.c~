@@ -1,0 +1,8 @@
+/* Определяет фукцию с аргументами */
+#include <stdio.h>
+void pound(int n );
+int main(void)
+
+{
+	
+}
