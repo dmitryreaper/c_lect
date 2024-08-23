@@ -1,32 +1,46 @@
 #include <stdio.h>
-
 int main(void)
 {
-  double num_one;
-  double num_two;
-  char Character[1] = " ";
-
-  printf("Enter 'h' for help\n");
-  while(1)
-  {
-    printf("Calc: ");
-    scanf(" %lf %c %lf", &num_one, &Character[0], &num_two);
-
-    switch (Character[0])
-    {
-      case'+': printf("= %d\n", (int)num_one + (int)num_two);
-        break;
-      case'-': printf("= %d\n", (int)num_one - (int)num_two);
-        break;
-      case'*': printf("= %d\n", (int)num_one * (int)num_two);
-        break;
-      case'%': printf("= %.2f\n", num_one / 100 * num_two);
-        break;
-      case'/': printf("= %d\n", (int)num_one / (int)num_two);
-        default: continue;
-    }
-
-  }
-  
-  return 0;
+    int number_one = 0;
+    int number_two = 0;
+    int result = 0;
+    char Character;
+    printf("Hello this calculator develop to learn programming in C\n");
+    printf("Version calculator - 0.1\n");
+    while(1)
+	{
+	    printf("Enter number: ");
+	    scanf("%d%c%d", &number_one, &Character, &number_two);
+	    if(Character == '+')
+		{
+		    result = number_one + number_two;
+		    printf("= %d\n", result);
+		    continue;
+		}
+	    else if(Character == '-')
+		{
+		    result = number_one - number_two;
+		    printf("= %d\n", result);
+		    continue;
+		}
+	    else if(Character == '/')
+		{
+		    result = number_one / number_two;
+		    printf("= %d\n", result);
+		    continue;
+		}
+	    else if(Character == '*')
+		{
+		    result = number_one * number_two;
+		    printf("= %d\n", result);
+		    continue;
+		}
+	    else
+		{
+		    printf("Error: enter correct data\n");
+		    continue;
+		}
+	}
+    
+    return 0;
 }

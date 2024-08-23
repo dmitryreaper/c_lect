@@ -2,15 +2,10 @@
 
 int main(void)
 {
-    int number_one, number_two;
-
-    printf("Enter your number: ");
-    scanf("%d", &number_one);
-    printf("Enter your number: ");
-    scanf("%d", &number_two);
-
-    number_one += number_two;
-    printf("= %d", number_one);
-
+    int number = 2024;
+    number += number;
+    
+    printf("Number = %d\n", number);
+    
     return 0;
 }
