@@ -1,0 +1,130 @@
+#include <sys/ioctl.h>
+#include <sys/types.h>
+#include <sys/audioio.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <string.h>
+#include <signal.h>
+#include <xcb/xcb.h>
+#include <xcb/xcb_icccm.h>
+#include <xcb/xcb_aux.h>
+
+int sigcode;
+
+static void sigcatch(int);
+static void settitle(xcb_connection_t *, xcb_screen_t *, char *);
+static int readvolume(void);
+
+void
+sigcatch(int sig) {
+    sigcode = sig;
+}
+cc -O2 -pipe  -g -std=c99 -pedantic -Wall -Wextra -I/usr/X11R6/include dwmstatus.c  -L/usr/X11R6/lib -lxcb -lxcb-util -o dwmstatus
+
+void
+settitle(xcb_connection_t *conn, xcb_screen_t *screen, char *status) {
+    xcb_void_cookie_t cookie;
+
+    cookie = xcb_change_property_checked(conn, XCB_PROP_MODE_REPLACE,
+                                         screen->root,
+                                         XCB_ATOM_WM_NAME,
+                                         XCB_ATOM_STRING, 8,
+                                         strlen(status), status);
+
+    xcb_flush(conn);
+    if (NULL != xcb_request_check(conn, cookie)) {
+        printf("Couldn't set X server's root window name\n");
+        exit(1);
+    }
+}
+
+int
+readvolume(void) {
+    int fd;
+    mixer_ctrl_t volume_ctrl;
+    mixer_devinfo_t devinfo;
+    int found = 0;
+
+    fd = open("/dev/audioctl0", O_RDONLY);
+    if (fd == -1) {
+        perror("ERRRRRRRRRRRRRRRR");
+        return -1;
+    }
+
+    for (devinfo.index = 0; ioctl(fd, AUDIO_MIXER_DEVINFO, &devinfo) == 0; devinfo.index++) {
+        if (strcmp(devinfo.label.name, AudioNmaster) == 0) {
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found) {
+        fprintf(stderr, "бас не хуярит\n");
+        close(fd);
+        return -1;
+    }
+
+    volume_ctrl.dev = devinfo.index;
+    volume_ctrl.type = AUDIO_MIXER_VALUE;
+    volume_ctrl.un.value.num_channels = 1;
+
+    if (ioctl(fd, AUDIO_MIXER_READ, &volume_ctrl) == -1) {
+        perror("уровнь громкости говна");
+        close(fd);
+        return -1;
+    }
+
+    close(fd);
+
+    // Возвращаем средний уровень громкости в процентах
+    int left = volume_ctrl.un.value.level[AUDIO_MIXER_LEVEL_LEFT];
+    int right = volume_ctrl.un.value.level[AUDIO_MIXER_LEVEL_RIGHT];
+    return (left + right) / 2;
+}
+
+int
+main(void) {
+    int volume;
+    time_t rawtime;
+    struct tm *timeinfo;
+    char timestr[17];
+    char status[80];
+    int scrno;
+    xcb_connection_t *conn;
+    xcb_screen_t *screen;
+
+    conn = xcb_connect(NULL, &scrno);
+    if (!conn) {
+        fprintf(stderr, "can't connect to an X server\n");
+        exit(1);
+    }
+
+    screen = xcb_aux_get_screen(conn, scrno);
+
+    if (SIG_ERR == signal(SIGHUP, sigcatch)) {
+        perror("signal");
+        exit(1);
+    }
+
+    while (1) {
+        volume = readvolume();
+        if (volume == -1) {
+            fprintf(stderr, "Нету  уровеня звука\n");
+            exit(1);
+        }
+
+        time(&rawtime);
+        timeinfo = localtime(&rawtime);
+        strftime(timestr, 17, "%F %R", timeinfo);
+
+        snprintf(status, 80, "Volume %d%% | %s", volume, timestr);
+
+        settitle(conn, screen, status);
+
+        sleep(1);
+    }
+
+    return 0;
+}
